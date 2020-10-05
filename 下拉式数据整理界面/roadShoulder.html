@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>路肩</title>
+    <base href="">
+    <link rel="stylesheet" type="text/css" href="zui/css/zui.min.css">
+    <link rel="stylesheet" href="zui/css/iconfont.css">
+    <link rel="stylesheet" href="zui/css/layui.css">
+    <link href="zui/lib/datetimepicker/datetimepicker.min.css" rel="stylesheet">
+    <script type="text/javascript" src="zui/lib/jquery/jquery.js"></script>
+    <script type="text/javascript" src="zui/js/zui.min.js"></script>
+    <script src="zui/lib/datetimepicker/datetimepicker.min.js"></script>
+    <script src="zui/js/axios.js"></script>
+    <script src="zui/js/api.js"></script>
+    
+    <script>
+      $(function(){
+        $(".layui-timeline-axis").click(function(){
+          if(!$(this).text()){
+            $(this).text("√")
+            $(this).next().prop("checked",true); 
+          }
+          else {
+            $(this).text("")
+            $(this).next().prop("checked",false); 
+          }
+
+        })
+           // 仅选择日期
+        $(".form-date").datetimepicker(
+        {
+            startView: 4,
+            minView: 4,
+            autoclose:true,
+            language:'zh-cn',
+            format: "yyyy年"
+        });
+         //修改弹窗  数据导入
+         $("#updateButton").click(function () {
+                  $("#roadId").val("G123");
+                  $("#roadId").attr("disabled", true);
+
+                  $("input[value=下行]").attr('checked','true');
+                  $("input:radio").attr('disabled','')
+
+                  let lightdata = [1,1,1,1,1,1,1,1,1,1]
+                  let inputs = $("#light").find("input")
+                  $("#light").find("input").each(function(i,that){
+                      $(that).val(lightdata[i])
+                  })
+                   
+                  
+                    
+            })
+        $("#deleteformsubmit").click(function () {
+          alert($('#deleteform').serialize());
+       });
+        $("#myformsubmit").click(function () {
+          if($("#roadId").val()) {
+            $("#light").find("input").each(function(i,dom){
+              if(!$(dom).val())$(dom).val("0")
+            })
+            $("#heavy").find("input").each(function(i,dom){
+              if(!$(dom).val())$(dom).val("0")
+            })
+            $('#myform').serialize();
+            $('#dismiss').click()
+          }else{
+            $("#roadId").focus();
+            
+          }
+          //post("127.0.0.1",$('#myform').serialize())
+       });
+       $(".form-date").attr("value",new Date().getFullYear());
+       $(".input-sm").blur(function(){
+         if(!$(this).val()){
+          $(this).val("0")
+         }
+       })
+      })
+    
+    </script>
+    <style>
+      .textstyle{
+        text-align: center !important;
+      }
+      hr{
+        background-color:firebrick ;
+      }
+    </style>
+</head>
+<body>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="bg-info with-padding">
+                路肩损坏
+            </div>
+        </div>
+    </div>
+    <div class="row">
+      <div style="min-height: 3px;"></div>
+  </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="btn-toolbar">
+                <div class="btn-group ">
+                    <button class="btn btn-primary " type="button" data-toggle="modal"  data-target="#AddDialog"><span class="iconfont icon-jiahao"></span>添加</button>
+                    <button class="btn btn-danger " type="button" id="deleteformsubmit"><span class="iconfont icon-shanchu" ></span>删除</button>
+                    <button class="btn btn-info  " type="button" id="updateButton" data-toggle="modal"  data-target="#AddDialog" ><span class="iconfont icon-xiugai" ></span>修改</button>
+                    <button class="btn btn-success " type="button"><span class="iconfont icon-daoru"></span>导入</button>
+                    <button class="btn btn-warning " type="button"><span class="iconfont icon-chongzhi"></span>重置</button>
+                </div>
+                <div class="btn-group">
+                    <div class="input-control search-box search-box-circle has-icon-left has-icon-right" id="searchboxExample">
+                        <input id="inputSearchExample1" type="search" class="form-control search-input" placeholder="输入路段起点桩号">
+                        <label for="inputSearchExample1" class="input-control-icon-left search-icon"><i class="icon icon-search"></i></label>
+                        <a href="#" class="input-control-icon-right search-clear-btn"><i class="icon icon-remove"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div style="min-height: 10px;"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div id="accordion">
+                <a class="card" href="#collapseExample1" data-toggle="collapse" data-parent="#accordion" style=" margin-bottom: 5px;">
+                    <div class="card-heading"><strong>良辰美景</strong></div>
+                </a>
+                <div class="collapse in" id="collapseExample1">
+                  <div class="hl-success with-padding">
+                    <ul class="layui-timeline">
+                      <form id="deleteform">
+                        <li class="layui-timeline-item">
+                            <i class="layui-timeline-axis"></i>
+                            <input type="checkbox" name="delete1" value="1,2" style="display: none;"/>
+                          <div class="layui-timeline-content layui-text">
+                            <h3 class="layui-timeline-title">8月18日</h3>
+                           
+                            <div class="row" >
+                              <div class=" col-md-12 textstyle" >
+                                <h2 style="margin-bottom: 15px;">百米损坏情况</h2>
+                                <div class="row" >
+                                  <div class="col textstyle" >
+                                    <span>程度</span>
+                                  </div>
+                                  <div class="col-md-1 textstyle">
+                                    <span>100</span>
+                                  </div>
+                                  <div class=" col-md-1 textstyle">
+                                    <span>200</span>
+                                  </div>
+                                  <div class=" col-md-1 textstyle">
+                                    <span>300</span>
+                                  </div>
+                                  <div class=" col-md-1 textstyle">
+                                    <span>400</span>
+                                  </div>
+                                  <div class=" col-md-1 textstyle">
+                                    <span>500</span>
+                                  </div>
+                                  <div class=" col-md-1 textstyle">
+                                    <span>600</span>
+                                  </div>
+                                  <div class=" col-md-1 textstyle">
+                                    <span>700</span>
+                                  </div>
+                                  <div class=" col-md-1 textstyle">
+                                    <span>800</span>
+                                  </div>
+                                  <div class=" col-md-1 textstyle">
+                                    <span>900</span>
+                                  </div>
+                                  <div class=" col-md-1 textstyle">
+                                    <span>1000</span>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                              <div class="col textstyle">
+                                <span>轻</span>
+                              </div>
+                              <div class=" col-md-1 textstyle">
+                                <span>1</span>
+                              </div>
+                              <div class=" col-md-1 textstyle">
+                                <span>1</span>
+                              </div>
+                              <div class=" col-md-1 textstyle">
+                                <span>1</span>
+                              </div>
+                              <div class=" col-md-1 textstyle">
+                                <span>1</span>
+                              </div>
+                              <div class=" col-md-1 textstyle">
+                                <span>1</span>
+                              </div>
+                              <div class=" col-md-1 textstyle">
+                                <span>1</span>
+                              </div>
+                              <div class=" col-md-1 textstyle">
+                                <span>1</span>
+                              </div>
+                              <div class=" col-md-1 textstyle">
+                                <span>1</span>
+                              </div>
+                              <div class=" col-md-1 textstyle">
+                                <span>1</span>
+                              </div>
+                              <div class=" col-md-1 textstyle">
+                                <span>1</span>
+                              </div>
+                            </div>
+                            <hr>
+                            <div class="row" >
+                              <div class="col textstyle">
+                                <span>重</span>
+                              </div>
+                            </div>
+                            <hr>
+                          </div>
+                        </li>
+                        <li class="layui-timeline-item">
+                          <i class="layui-timeline-axis"></i>
+                          <input type="checkbox" name="delete1" value="3,4" style="display: none;"/>
+                        <div class="layui-timeline-content layui-text">
+                          <h3 class="layui-timeline-title">8月18日</h3>
+                          <div class="row" >
+                            <div class=" col-md-12 textstyle" >
+                              <h2 style="margin-bottom: 15px;">百米损坏情况</h2>
+                              <div class="row" >
+                                <div class="col textstyle" >
+                                  <span>程度</span>
+                                </div>
+                                <div class="col-md-1 textstyle">
+                                  <span>100</span>
+                                </div>
+                                <div class=" col-md-1 textstyle">
+                                  <span>200</span>
+                                </div>
+                                <div class=" col-md-1 textstyle">
+                                  <span>300</span>
+                                </div>
+                                <div class=" col-md-1 textstyle">
+                                  <span>400</span>
+                                </div>
+                                <div class=" col-md-1 textstyle">
+                                  <span>500</span>
+                                </div>
+                                <div class=" col-md-1 textstyle">
+                                  <span>600</span>
+                                </div>
+                                <div class=" col-md-1 textstyle">
+                                  <span>700</span>
+                                </div>
+                                <div class=" col-md-1 textstyle">
+                                  <span>800</span>
+                                </div>
+                                <div class=" col-md-1 textstyle">
+                                  <span>900</span>
+                                </div>
+                                <div class=" col-md-1 textstyle">
+                                  <span>1000</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="row">
+                            <div class="col textstyle">
+                              <span>轻</span>
+                            </div>
+                            <div class=" col-md-1 textstyle">
+                              <span>1</span>
+                            </div>
+                            <div class=" col-md-1 textstyle">
+                              <span>1</span>
+                            </div>
+                            <div class=" col-md-1 textstyle">
+                              <span>1</span>
+                            </div>
+                            <div class=" col-md-1 textstyle">
+                              <span>1</span>
+                            </div>
+                            <div class=" col-md-1 textstyle">
+                              <span>1</span>
+                            </div>
+                            <div class=" col-md-1 textstyle">
+                              <span>1</span>
+                            </div>
+                            <div class=" col-md-1 textstyle">
+                              <span>1</span>
+                            </div>
+                            <div class=" col-md-1 textstyle">
+                              <span>1</span>
+                            </div>
+                            <div class=" col-md-1 textstyle">
+                              <span>1</span>
+                            </div>
+                            <div class=" col-md-1 textstyle">
+                              <span>1</span>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class="row" >
+                            <div class="col textstyle">
+                              <span>重</span>
+                            </div>
+                          </div>
+                          <hr>
+                        </div>
+                      </li>
+                    </form>
+                      </ul>
+                  </div>
+                </div>
+              </div>
+        </div>
+    </div>
+    <!-- 对话框 -->
+<div class="modal fade" id="AddDialog">
+  <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">关闭</span></button>
+          <h4 class="modal-title">添加</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal" id="myform">
+            <div class="form-group" >
+                <label  class="col textstyle required">路段起点桩号</label>
+                <div class="col">
+                  <input type="text" id="roadId" name="roadid" class="form-control required" id="exampleInputAccount4" placeholder="请输入路段起点桩号">
+                </div>
+                <label for="exampleInputAccount1" class="col textstyle required">年份</label>
+                <div class="col ">
+                  <input type="text" name="year" class="form-control form-date" placeholder="选择或者输入一个日期：yyyy" >
+                </div>
+                <label for="exampleInputAccount1" class="col textstyle required">方向</label>
+              <div class="col radio">
+                <label class="checkbox-inline">
+                  <input type="radio" name="direction" value="上行" checked="checked"> 上行
+                </label>
+                <label class="checkbox-inline">
+                  <input type="radio" name="direction" value="下行"> 下行
+                </label>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputAccount1" class="col textstyle required">程度（轻）</label>
+              <div class="input-group" id="light">
+                <input type="number"  name="selction1" class="form-control input-sm" placeholder="100m">
+                <span class="input-group-addon fix-border fix-padding"></span>
+                <input type="number"  name="selction2" class="form-control input-sm" placeholder="200m">
+                <span class="input-group-addon fix-border fix-padding"></span>
+                <input type="number"  name="selction3" class="form-control input-sm" placeholder="300m">
+                <span class="input-group-addon fix-border fix-padding"></span>
+                <input type="number"  name="selction4" class="form-control input-sm" placeholder="400m">
+                <span class="input-group-addon fix-border fix-padding"></span>
+                <input type="number"  name="selction5" class="form-control input-sm" placeholder="500m">
+                <span class="input-group-addon fix-border fix-padding"></span>
+                <input type="number"  name="selction6" class="form-control input-sm" placeholder="600m">
+                <span class="input-group-addon fix-border fix-padding"></span>
+                <input type="number"  name="selction7" class="form-control input-sm" placeholder="700m">
+                <span class="input-group-addon fix-border fix-padding"></span>
+                <input type="number"  name="selction8" class="form-control input-sm" placeholder="800m">
+                <span class="input-group-addon fix-border fix-padding"></span>
+                <input type="number"  name="selction9" class="form-control input-sm" placeholder="900m">
+                <span class="input-group-addon fix-border fix-padding"></span>
+                <input type="number"  name="selction10" class="form-control input-sm" placeholder="1000m">                
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="exampleInputAccount1" class="col textstyle required">程度（重）</label>
+              <div class="input-group" id="heavy">
+                <input type="number"  name="selction1" class="form-control input-sm" placeholder="100m">
+                <span class="input-group-addon fix-border fix-padding"></span>
+                <input type="number"  name="selction2" class="form-control input-sm" placeholder="200m">
+                <span class="input-group-addon fix-border fix-padding"></span>
+                <input type="number"  name="selction3" class="form-control input-sm" placeholder="300m">
+                <span class="input-group-addon fix-border fix-padding"></span>
+                <input type="number"  name="selction4" class="form-control input-sm" placeholder="400m">
+                <span class="input-group-addon fix-border fix-padding"></span>
+                <input type="number"  name="selction5" class="form-control input-sm" placeholder="500m">
+                <span class="input-group-addon fix-border fix-padding"></span>
+                <input type="number"  name="selction6" class="form-control input-sm" placeholder="600m">
+                <span class="input-group-addon fix-border fix-padding"></span>
+                <input type="number"  name="selction7" class="form-control input-sm" placeholder="700m">
+                <span class="input-group-addon fix-border fix-padding"></span>
+                <input type="number"  name="selction8" class="form-control input-sm" placeholder="800m">
+                <span class="input-group-addon fix-border fix-padding"></span>
+                <input type="number"  name="selction9" class="form-control input-sm" placeholder="900m">
+                <span class="input-group-addon fix-border fix-padding"></span>
+                <input type="number"  name="selction10" class="form-control input-sm" placeholder="1000m">
+              </div>
+            </div>
+         
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="dismiss" class="btn btn-default" data-dismiss="modal">关闭</button>
+          <button type="button" class="btn btn-primary" id="myformsubmit">提交</button>
+        </div>
+      </form>
+      </div>
+  </div>
+</div>
+</body>
+</html>
+
